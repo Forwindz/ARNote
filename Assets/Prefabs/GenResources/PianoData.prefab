@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9218834765321111314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9218834765321111324}
+  - component: {fileID: 9218834765321111315}
+  m_Layer: 0
+  m_Name: PianoData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9218834765321111324
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9218834765321111314}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.85067475, y: 0.38489532, z: 0.581334}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9218834765321111315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9218834765321111314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35eeaaa6e1e176f44831f3b0df813baa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayText:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  materials:
+  - {fileID: 2100000, guid: 0492e299668d4e34ab00bbc0b3efbb17, type: 2}
+  - {fileID: 2100000, guid: f404d3f2fbc012941a5b0d80565e66d5, type: 2}
+  - {fileID: 2100000, guid: c6d2bce1168e00243b3183d6456d367e, type: 2}
+  - {fileID: 2100000, guid: dcf378782e803ec4d9a14aa1493cdb7f, type: 2}
+  - {fileID: 2100000, guid: fa77b9aa23d6ac54d8afff8511c40028, type: 2}
+  - {fileID: 2100000, guid: 954d987fbf4dc1b4da22e562c83b3b6c, type: 2}
+  - {fileID: 2100000, guid: d3324c7c9d950eb46b3328d272eb571f, type: 2}
+  audioClips:
+  - {fileID: 8300000, guid: 96a7c6fe860e82646860701bb6aff267, type: 3}
+  - {fileID: 8300000, guid: 39e1a1bf71a34254cba9b547f792b92c, type: 3}
+  - {fileID: 8300000, guid: a38f3ba1dfbcf71478784bb372b049ce, type: 3}
+  - {fileID: 8300000, guid: a55f6b119d953044da16c9b22f90a800, type: 3}
+  - {fileID: 8300000, guid: b7f779e4d79128f44815866563240b19, type: 3}
+  - {fileID: 8300000, guid: bbdd8259799d96442bbb1e3cd20a9386, type: 3}
+  - {fileID: 8300000, guid: 276b2e9d560f83a45b53621622208e0f, type: 3}
+  resouceName: piano
+  template: {fileID: 1716334202188400706, guid: 05251677566732941913d9e49d320712, type: 3}
+  offset: {x: 0.6, y: 0, z: 0}
+  centerOffset: {x: -0.5, y: 0, z: 0}
