@@ -13,12 +13,14 @@ public class SheetVisualCard : VisualCard
     public Material emptySheetMaterial;
     public Material fullSheetMaterial;
     public TextMeshPro frontText, backText;
+    public LinkRender linkRenderer;
     // Start is called before the first frame update
     void Start()
     {
         Utils.FindComp(gameObject, ref meshRenderer);
         Utils.FindComp(gameObject, ref frontText, "FrontInfo");
         Utils.FindComp(gameObject, ref backText, "BackInfo");
+        Utils.FindComp(gameObject, ref linkRenderer, "Link");
     }
 
     public void SetVisualEmpty()
@@ -48,10 +50,15 @@ public class SheetVisualCard : VisualCard
         Debug.Log("VisualSheetCard: " + s);
         if (IsFront)
         {
-            FrontText = s;
+            if(frontText!=null)
+            {
+                FrontText = s;
+            }
+            
         }else
         {
-            BackText = s;
+            if (backText != null)
+                BackText = s;
         }
     }
 
@@ -72,8 +79,21 @@ public class SheetVisualCard : VisualCard
 
 
     // Update is called once per frame
-    //void Update()
-    //{
-
-    //}
+    public override void Update()
+    {
+        base.Update();
+        if(linkRenderer!=null)
+        {
+            if(sheetCard.instrumentLink==null)
+            {
+                linkRenderer.EnableRender = false;
+            }
+            else
+            {
+                linkRenderer.EnableRender = true;
+                linkRenderer.Pos2 = transform.position;
+                linkRenderer.Pos1 = sheetCard.instrumentLink.visualCard.transform.position;
+            }
+        }
+    }
 }

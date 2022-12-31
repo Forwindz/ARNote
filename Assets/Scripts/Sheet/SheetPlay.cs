@@ -5,6 +5,7 @@ using UnityEngine;
 public class SheetPlay : MonoBehaviour
 {
     public SheetCard sheetCard;
+    public SheetRender sheetRender;
 
     public float time = 0.0f;
     public int playIndex = 0;
@@ -14,12 +15,14 @@ public class SheetPlay : MonoBehaviour
     void Start()
     {
         Utils.FindComp(gameObject, ref sheetCard);
+        Utils.FindComp(gameObject, ref sheetRender);
     }
 
     public void Play()
     {
         isPlaying = true;
         sheetCard.sheetVisualCard.DisplayText("Playing");
+        sheetRender.InitSheet();
     }
 
     public void Pause()
@@ -33,6 +36,7 @@ public class SheetPlay : MonoBehaviour
         playIndex = 0;
         isPlaying = false;
         sheetCard.sheetVisualCard.DisplayText("End");
+        sheetRender.ClearRender();
     }
 
 
@@ -49,7 +53,26 @@ public class SheetPlay : MonoBehaviour
                 playIndex++;
             }
             sheetCard.sheetVisualCard.DisplayText("Playing " + (int)(sheet.totalTime - time) + " s");
-            if(time>sheet.totalTime)
+
+            foreach (INoteRender nr in sheetRender.noteRenders)
+            {
+                if(!nr.enabled)
+                {
+                    continue;
+                }
+                IBaseNote nd = nr.NoteData;
+                sheetRender.SetNotePosition(nr, sheetCard.sheetData.TimeToBeat(nd.BeginTime - time));
+                if (nd.BeginTime <= time)
+                {
+                    nr.OnJudge(SheetScoreCalc.NoteJudge.PERFECT);
+                }
+                if (nd.BeginTime <= time-1.0f)
+                {
+                    nr.enabled = false;
+                }
+            }
+
+            if (time>sheet.totalTime)
             {
                 ResetPlayProgress();
             }

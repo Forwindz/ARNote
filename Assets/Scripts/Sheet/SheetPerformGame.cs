@@ -44,11 +44,13 @@ public class SheetPerformGame : MonoBehaviour
         Utils.FindComp(gameObject, ref sheetCard);
         Utils.FindComp(gameObject, ref sheetRender);
         Utils.FindComp(gameObject, ref sheetScore);
+        Utils.FindComp(gameObject, ref scoreMesh, "ScoreText");
         instrumentCard = sheetCard.instrumentLink;
     }
     public void BeginPlay()
     {
         Init();
+        sheetRender.InitSheet();
         isPlaying = true;
         prepareTime = sheetRender.prepareTime;
         time = -prepareTime;
@@ -58,6 +60,7 @@ public class SheetPerformGame : MonoBehaviour
             Vector3.up;
         sheetCard.sheetVisualCard.DisplayText("Start!");
         score = 0;
+        sheetRender.DisplayScanline(true);
     }
 
     public void EndPlay()
@@ -76,27 +79,40 @@ public class SheetPerformGame : MonoBehaviour
         {
             sheetCard.sheetVisualCard.DisplayText("Good Performance!");
         }
+        sheetRender.DisplayScanline(false);
+        finalScoreDisplayTime = 3.0f;
 
-
+        sheetRender.ClearRender();
 
     }
 
+    private float finalScoreDisplayTime = 0.0f;
 
     // Update is called once per frame
     void Update()
     {
         if(!isPlaying)
         {
+            if(finalScoreDisplayTime>0)
+            {
+                finalScoreDisplayTime -= Time.deltaTime;
+                if (finalScoreDisplayTime <= 0)
+                {
+                    scoreMesh.text = "";
+                }
+            }
             return;
         }
         time += Time.deltaTime;
-        Vector3 offset = Vector3.down* sheetRender.basicBeatGap* 
-            sheetCard.sheetData.TimeToBeat(Time.deltaTime);
         float disappearTime = time - sheetScore.missBeat;
         foreach (INoteRender nr in sheetRender.noteRenders)
         {
-            nr.transform.position += offset;
+            if (!nr.enabled)
+            {
+                continue;
+            }
             IBaseNote nd = nr.NoteData;
+            sheetRender.SetNotePosition(nr, sheetCard.sheetData.TimeToBeat(nd.BeginTime-time));
             if(nd.BeginTime<= disappearTime)
             {
                 if(!nr.Hidden)
@@ -127,7 +143,7 @@ public class SheetPerformGame : MonoBehaviour
                 {
                     continue;
                 }
-                float d = Mathf.Abs(nd.BeginTime - time);
+                float d = nd.BeginTime - time;
                 if(d<distance)
                 {
                     distance = d;

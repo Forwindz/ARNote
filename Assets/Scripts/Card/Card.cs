@@ -45,6 +45,21 @@ public class Card : MonoBehaviour
     {
         Utils.FindComp(gameObject, ref visualCard);
         visualCard.card = this;
+        CardManager cm = FindObjectOfType<CardManager>();
+        if (cm != null)
+        {
+            cm.AddCard(this);
+        }
+    }
+
+    protected virtual void OnDestroy()
+    {
+        CardManager cm = FindObjectOfType<CardManager>();
+        if(cm!=null)
+        {
+            cm.RemoveCard(this);
+        }
+        
     }
 
     public virtual void OnCardApproach(Card other,float distance)

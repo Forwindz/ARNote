@@ -15,7 +15,7 @@ public class SheetData
 
     public float NoteCount
     {
-        get => notes.Count;
+        get => notes == null ? 0 : notes.Count;
     }
 
     public float BeatTime

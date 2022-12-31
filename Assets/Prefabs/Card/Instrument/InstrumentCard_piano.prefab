@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   card: {fileID: 0}
+  isMoveable: 1
   fliped_: 0
 --- !u!65 &1680591955331004110
 BoxCollider:
@@ -1838,7 +1839,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualCard: {fileID: 0}
-  approachThreshold: 0
+  approachThreshold: 1
   resources: {fileID: 9218834765321111315, guid: 4bec3320ce0e9a0498eb87a56284b5b4, type: 3}
   keys:
   - {fileID: 4868021152417449567}

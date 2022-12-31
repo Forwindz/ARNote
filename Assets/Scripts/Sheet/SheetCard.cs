@@ -15,15 +15,15 @@ public class SheetCard : Card
     {
         get => sheetData_;
         set {
-            sheetData_ = value;
-            if(IsEmptySheet)
+            if(sheetData_!=value)
             {
-                
+                sheetData_ = value;
+                if (sheetVisualCard != null)
+                {
+                    sheetVisualCard.UpdateSheetInfo();
+                }
             }
-            else
-            {
-
-            }
+            
         }
     }
 
@@ -46,12 +46,20 @@ public class SheetCard : Card
         Utils.FindComp(gameObject, ref sheetPerformGame);
         Utils.FindComp(gameObject, ref sheetRecord);
         Utils.FindComp(gameObject, ref sheetPlay);
-        //InitGame(instrumentLink);
+        UpdateDisplayState();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(instrumentLink!=null)
+        {
+            float curDis = Vector3.Distance(visualCard.transform.position, instrumentLink.visualCard.transform.position);
+            if(curDis>approachThreshold)
+            {
+                OnCardApproach(null, curDis);
+            }
+        }
     }
 
 
@@ -59,12 +67,11 @@ public class SheetCard : Card
 
     public void InitSheet()
     {
-        sheetRender.InitSheet(instrumentLink);
+        sheetRender.InitSheet();
     }
 
     public void BeginGame()
     {
-        InitSheet();
         Utils.EnsureComp(gameObject, ref sheetPerformGame);
         sheetPerformGame.BeginPlay();
     }
@@ -119,9 +126,25 @@ public class SheetCard : Card
 
     public override void OnCardApproach(Card other, float distance)
     {
-        if (other is InstrumentCard card)
+        if (other is InstrumentCard)
         {
-            instrumentLink = card;
+            if(other != instrumentLink)
+            {
+                instrumentLink = (InstrumentCard)other;
+                UpdateDisplayState();
+            }else
+            {
+                instrumentLink = (InstrumentCard)other;
+            }
+            
+        }
+        if(other == null)
+        {
+            if (other != instrumentLink)
+            {
+                instrumentLink = null;
+                UpdateDisplayState();
+            }
         }
     }
 
