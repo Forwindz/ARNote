@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Click2PlayKey : MonoBehaviour
+public class ClickMonitor : MonoBehaviour
 {
     public UnityEvent<RaycastHit> clickEvent;
+    private OnClickInvoke lastFocus = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +16,6 @@ public class Click2PlayKey : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -25,7 +25,24 @@ public class Click2PlayKey : MonoBehaviour
                 OnClickInvoke oc = hit.transform.GetComponent<OnClickInvoke>();
                 if(oc!=null)
                 {
-                    oc.OnClick(hit);
+                    if(lastFocus!=oc)
+                    {
+                        if(lastFocus!=null)
+                        {
+                            lastFocus.OnLoseFocus(hit);
+                        }
+                        lastFocus = oc;
+                        oc.OnFocus(hit);
+                    }
+                    oc.ProcessMouseInfo(hit);
+                }
+            }
+            else
+            {
+                if (lastFocus != null)
+                {
+                    lastFocus.OnLoseFocus(hit);
+                    lastFocus = null;
                 }
             }
         }

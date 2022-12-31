@@ -12,6 +12,11 @@ public class SheetRecord : MonoBehaviour
     [SerializeField]
     protected float time;
 
+    public bool IsRecording
+    {
+        get => isRecording;
+    }
+
     public void BeginRecord()
     {
         Utils.FindComp(gameObject, ref sheetCard);
@@ -20,12 +25,14 @@ public class SheetRecord : MonoBehaviour
         tempSheet = new SheetData("customSheet_"+Random.Range(0,10000));
         tempSheet.bpm = 60;
         time = 0.0f;
+        sheetCard.sheetVisualCard.DisplayText("Recording");
     }
 
     public void EndRecord()
     {
         isRecording = false;
         sheetCard.sheetData = tempSheet;
+        sheetCard.sheetVisualCard.DisplayText("You've made a new sheet!");
     }
 
     // Update is called once per frame
@@ -44,6 +51,6 @@ public class SheetRecord : MonoBehaviour
             return;
         }
         tempSheet.AddNote(new HitNote(time, kb.index));
-
+        sheetCard.sheetVisualCard.DisplayText("Recording "+tempSheet.notes+" Notes");
     }
 }

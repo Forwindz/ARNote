@@ -17,6 +17,10 @@ public class CameraControl : MonoBehaviour
     private float yaw = 0f;
     private float pitch = 0f;
 
+    public bool enableLeft = true;
+    public bool enableRight = true;
+    public bool enableMiddle = true;
+
     private void Start()
     {
         // Initialize the correct initial rotation
@@ -27,7 +31,7 @@ public class CameraControl : MonoBehaviour
     private void Update()
     {
         //Look around with Left Mouse
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && enableLeft)
         {
             this.yaw += this.lookSpeedH * Input.GetAxis("Mouse X");
             this.pitch -= this.lookSpeedV * Input.GetAxis("Mouse Y");
@@ -36,12 +40,12 @@ public class CameraControl : MonoBehaviour
         }
 
         //drag camera around with Middle Mouse
-        if (Input.GetMouseButton(2))
+        if (Input.GetMouseButton(2) && enableMiddle)
         {
             transform.Translate(-Input.GetAxisRaw("Mouse X") * Time.deltaTime * dragSpeed, -Input.GetAxisRaw("Mouse Y") * Time.deltaTime * dragSpeed, 0);
         }
 
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) && enableRight)
         {
             //Zoom in and out with Right Mouse
             this.transform.Translate(0, 0, Input.GetAxisRaw("Mouse X") * this.zoomSpeed * .07f, Space.Self);

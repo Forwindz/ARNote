@@ -19,6 +19,7 @@ public class SheetPlay : MonoBehaviour
     public void Play()
     {
         isPlaying = true;
+        sheetCard.sheetVisualCard.DisplayText("Playing");
     }
 
     public void Pause()
@@ -31,6 +32,7 @@ public class SheetPlay : MonoBehaviour
         time = 0.0f;
         playIndex = 0;
         isPlaying = false;
+        sheetCard.sheetVisualCard.DisplayText("End");
     }
 
 
@@ -46,6 +48,7 @@ public class SheetPlay : MonoBehaviour
                 sheetCard.instrumentLink.Play(sheet[playIndex].AudioIndex);
                 playIndex++;
             }
+            sheetCard.sheetVisualCard.DisplayText("Playing " + (int)(sheet.totalTime - time) + " s");
             if(time>sheet.totalTime)
             {
                 ResetPlayProgress();

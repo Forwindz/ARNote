@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class InstrumentCard : MonoBehaviour
+public class InstrumentCard : Card
 {
     public KeyResources resources;
     public List<KeyBehavior> keys = new List<KeyBehavior>();

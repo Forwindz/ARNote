@@ -20,6 +20,48 @@ class Utils
             if(comp==null)
             {
                 comp = obj.transform.GetComponentInChildren<T>();
+                if (comp == null)
+                {
+                    comp = obj.transform.GetComponentInParent<T>();
+                }
+            }
+        }
+    }
+
+    public static void FindComp<T>(GameObject obj, ref T comp, string objName) where T : Component
+    {
+        if (comp == null)
+        {
+            comp = obj.GetComponent<T>();
+            if (comp == null)
+            {
+                //search child
+                T[] candidates = obj.transform.GetComponentsInChildren<T>();
+                if (candidates != null)
+                {
+                    foreach (T c in candidates)
+                    {
+                        if (c.gameObject.name == objName)
+                        {
+                            comp = c;
+                            return;
+                        }
+                    }
+                }
+                //search father
+                T[] candidates2 = obj.transform.GetComponentsInParent<T>();
+                if (candidates2 != null)
+                {
+                    foreach (T c in candidates2)
+                    {
+                        if (c.gameObject.name == objName)
+                        {
+                            comp = c;
+                            return;
+                        }
+                    }
+                }
+
             }
         }
     }

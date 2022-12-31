@@ -7,7 +7,7 @@ public class KeyClick : OnClickInvoke
 {
     public KeyBehavior keyBehavior;
     public InstrumentCard card;
-    public override void OnClick(RaycastHit hit)
+    public override void OnMouseDownEvent(RaycastHit hit)
     {
         card.Play(keyBehavior.index);
     }

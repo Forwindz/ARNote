@@ -56,6 +56,8 @@ public class SheetPerformGame : MonoBehaviour
         scoreMesh.gameObject.transform.position =
             instrumentCard.transform.position +
             Vector3.up;
+        sheetCard.sheetVisualCard.DisplayText("Start!");
+        score = 0;
     }
 
     public void EndPlay()
@@ -63,6 +65,20 @@ public class SheetPerformGame : MonoBehaviour
         isPlaying = false;
         instrumentCard.onKeyClickEvent.RemoveListener(OnKeyClick);
         scoreMesh.text = "Final Score: " + DisplayScore;
+        if(DisplayScore>90)
+        {
+            sheetCard.sheetVisualCard.DisplayText("Perfect Performance!");
+        }
+        else if (DisplayScore > 50)
+        {
+            sheetCard.sheetVisualCard.DisplayText("Great Performance!");
+        }else
+        {
+            sheetCard.sheetVisualCard.DisplayText("Good Performance!");
+        }
+
+
+
     }
 
 

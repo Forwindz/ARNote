@@ -2,21 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SheetCard : MonoBehaviour
+public class SheetCard : Card
 {
     [SerializeField]
     private SheetData sheetData_;
+    public SheetVisualCard sheetVisualCard
+    {
+        get => (SheetVisualCard)visualCard;
+    }
 
     public SheetData sheetData
     {
         get => sheetData_;
         set {
             sheetData_ = value;
-            /*if(sheetRender!=null && sheetRender.inited && instrumentLink!=null)
+            if(IsEmptySheet)
             {
-                InitSheet();
-            }*/
+                
+            }
+            else
+            {
+
+            }
         }
+    }
+
+    public bool IsEmptySheet
+    {
+        get => sheetData == null || sheetData.NoteCount == 0;
     }
 
     public SheetRender sheetRender;
@@ -26,8 +39,9 @@ public class SheetCard : MonoBehaviour
     [Header("Card Link")]
     public InstrumentCard instrumentLink;
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         Utils.FindComp(gameObject, ref sheetRender);
         Utils.FindComp(gameObject, ref sheetPerformGame);
         Utils.FindComp(gameObject, ref sheetRecord);
@@ -39,6 +53,9 @@ public class SheetCard : MonoBehaviour
     void Update()
     {
     }
+
+
+    
 
     public void InitSheet()
     {
@@ -54,6 +71,10 @@ public class SheetCard : MonoBehaviour
 
     public void EndGame()
     {
+        if(sheetPerformGame==null)
+        {
+            return;
+        }
         sheetPerformGame.EndPlay();
     }
 
@@ -65,6 +86,10 @@ public class SheetCard : MonoBehaviour
 
     public void EndRecord()
     {
+        if (sheetRecord == null)
+        {
+            return;
+        }
         sheetRecord.EndRecord();
     }
 
@@ -90,5 +115,187 @@ public class SheetCard : MonoBehaviour
             return;
         }
         sheetPlay.ResetPlayProgress();
+    }
+
+    public override void OnCardApproach(Card other, float distance)
+    {
+        if (other is InstrumentCard card)
+        {
+            instrumentLink = card;
+        }
+    }
+
+    public override void OnClick(RaycastHit hit)
+    {
+        StateChange();
+    }
+
+    public override void OnFlip()
+    {
+        UpdateDisplayState();
+    }
+
+    public void UpdateDisplayState()
+    {
+        if(instrumentLink==null)
+        {
+            sheetVisualCard.DisplayText("Link to an instrument Card to use this card :)");
+            return;
+        }
+        if(sheetPerformGame!=null && sheetPerformGame.isPlaying)
+        {
+            EndGame();
+        }
+
+        if (sheetRecord != null && sheetRecord.IsRecording)
+        {
+            EndRecord();
+        }
+
+        if (sheetPlay != null && sheetPlay.isPlaying)
+        {
+            StopPlay();
+        }
+        
+        
+        if (IsFront)
+        {
+            if (IsEmptySheet)
+            {
+                if (sheetRecord == null)
+                {
+                    sheetVisualCard.DisplayText("Touch to Create your own music!");
+                }
+                else
+                {
+                    if (sheetRecord.IsRecording)
+                    {
+                    }
+                    else
+                    {
+                        sheetVisualCard.DisplayText("Touch to Create your own music!");
+                    }
+                }
+            }
+            else
+            {
+                if (sheetPlay == null)
+                {
+                    sheetVisualCard.DisplayText("Touch to Play the music!");
+                }
+                else
+                {
+                    if (sheetPlay.isPlaying)
+                    {
+                    }
+                    else
+                    {
+                        sheetVisualCard.DisplayText("Touch to Play the music!");
+                    }
+                }
+            }
+
+
+        }
+        else
+        {
+            if (!IsEmptySheet)
+            {
+                if (sheetPerformGame == null)
+                {
+                    sheetVisualCard.DisplayText("Touch to Perform sheet by yourself!");
+                }
+                else
+                {
+                    if (sheetPerformGame.isPlaying)
+                    {
+                    }
+                    else
+                    {
+                        sheetVisualCard.DisplayText("Touch to Perform sheet by yourself!");
+                    }
+                }
+            }
+            else
+            {
+                sheetVisualCard.DisplayText("Empty Sheet, flip card, touch it, and create your own sheet!");
+            }
+
+        }
+    }
+
+    public void StateChange()
+    {
+        if (instrumentLink == null)
+        {
+            return;
+        }
+
+        if (IsFront)
+        {
+            if (IsEmptySheet)
+            {
+                if (sheetRecord == null)
+                {
+                    BeginRecord();
+                }
+                else
+                {
+                    if (sheetRecord.IsRecording)
+                    {
+                        EndRecord();
+                    }
+                    else
+                    {
+                        BeginRecord();
+                    }
+                }
+            }
+            else
+            {
+                if (sheetPlay == null)
+                {
+                    BeginPlay();
+                }
+                else
+                {
+                    if (sheetPlay.isPlaying)
+                    {
+                        StopPlay();
+                    }
+                    else
+                    {
+                        BeginPlay();
+                    }
+                }
+            }
+            
+
+        }
+        else
+        {
+            if (!IsEmptySheet)
+            {
+                if (sheetPerformGame == null)
+                {
+                    BeginGame();
+                }
+                else
+                {
+                    if (sheetPerformGame.isPlaying)
+                    {
+                        EndGame();
+                    }
+                    else
+                    {
+                        BeginGame();
+                    }
+                }
+            }else
+            {
+                sheetVisualCard.DisplayText("Empty Sheet, flip card, touch it, and create your own sheet!");
+            }
+
+        }
     }
 }
